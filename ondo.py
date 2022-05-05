@@ -53,6 +53,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
     global kami1,kami2,kami3,temp
     
     def do_GET(self):
+    global kami1,kami2,kami3,temp
         parsed_path = urlparse(self.path)
 
         if parsed_path.path.endswith('/error'):
