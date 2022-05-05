@@ -42,7 +42,7 @@ def server():
         temp.labels('unit1').set(kami1)
         temp.labels('unit2').set(kami2)
         temp.labels('unit3').set(kami3)
-        
+
         server.serve_forever()
 
 
@@ -57,13 +57,3 @@ if __name__ =="__main__":
     while True:
         time.sleep(15)
         main()
-
-
-
-
-
-
-
-
-
-        
