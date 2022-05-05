@@ -1,4 +1,4 @@
-import requests,pprint,json,time, prometheus_client, threading
+import requests,pprint,json,time,os, prometheus_client, threading
 from prometheus_client import start_http_server, Summary
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -12,9 +12,9 @@ kami3 = ""
 
 temp = prometheus_client.Gauge('serverroom_temp','Hold current system resource usage',['device_name'])
 
-api_key = "xxxxx"
-login_id ="xxxxx"
-password = "xxxxx"
+api_key  = os.getenv('ONDO_APIKEY', '')
+login_id = os.getenv('ONDO_LOGINID', '')
+password = os.getenv('ONDO_PASSWORD', '')
 
 paylord = {'api-key':api_key,"login-id":login_id,'login-pass':password}
 
