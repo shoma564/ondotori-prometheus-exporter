@@ -41,6 +41,7 @@ def server():
     start_http_server(8000)
     with ThreadingHTTPServer(('0.0.0.0', 8080), MyHTTPRequestHandler) as server:
         print(f'[{datetime.now()}] Server startup.')
+        response = requests.post(url,json.dumps(paylord).encode('utf-8'),headers=header).json()
         temp.labels('unit1').set(kami1)
         temp.labels('unit2').set(kami2)
         temp.labels('unit3').set(kami3)
