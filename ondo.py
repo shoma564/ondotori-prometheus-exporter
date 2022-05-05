@@ -1,4 +1,4 @@
-import requests,pprint,json,time, prometheus_client, threading, random, time
+import requests,pprint,json,time, prometheus_client, threading, random, time, os
 from prometheus_client import start_http_server, Summary
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -40,25 +40,25 @@ def server():
     global kami1,kami2,kami3, temp
     start_http_server(8000)
     with ThreadingHTTPServer(('0.0.0.0', 8080), MyHTTPRequestHandler) as server:
-        print(f'[{datetime.now()}] Server startup.') 
+        print(f'[{datetime.now()}] Server startup.')
         temp.labels('unit1').set(kami1)
         temp.labels('unit2').set(kami2)
         temp.labels('unit3').set(kami3)
-        
+
         server.serve_forever()
 
 
 
 class MyHTTPRequestHandler(BaseHTTPRequestHandler):
     global kami1,kami2,kami3,temp
-    
+
     def do_GET(self):
-    global kami1,kami2,kami3,temp
+        global kami1,kami2,kami3,temp
         parsed_path = urlparse(self.path)
 
         if parsed_path.path.endswith('/error'):
             raise Exception('Error')
-            
+
         response = requests.post(url,json.dumps(paylord).encode('utf-8'),headers=header).json()
         global kami1, kami2, kami3
         kami1 = float(response['devices'][0]['channel'][0]['value'])
