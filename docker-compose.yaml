@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    environment:
+      ONDO_APIKEY: "apikey"
+      ONDO_LOGINID: "loginid"
+      ONDO_PASSWORD: "password"
+    ports:
+      - 8123:8000
