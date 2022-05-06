@@ -1,4 +1,4 @@
-import requests,pprint,json,time, prometheus_client, threading, random, time, os
+import requests,pprint,json,time, prometheus_client, threading, random, time, os, sys, socket
 from prometheus_client import start_http_server, Summary
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -11,7 +11,9 @@ kami1 = ""
 kami2 = ""
 kami3 = ""
 
+
 temp = prometheus_client.Gauge('serverroom_temp','Hold current system resource usage',['device_name'])
+
 
 api_key  = os.getenv('ONDO_APIKEY', '')
 login_id = os.getenv('ONDO_LOGINID', '')
@@ -41,13 +43,20 @@ def server():
     start_http_server(8000)
     with ThreadingHTTPServer(('0.0.0.0', 8080), MyHTTPRequestHandler) as server:
         print(f'[{datetime.now()}] Server startup.')
-        response = requests.post(url,json.dumps(paylord).encode('utf-8'),headers=header).json()
         temp.labels('unit1').set(kami1)
         temp.labels('unit2').set(kami2)
         temp.labels('unit3').set(kami3)
 
         server.serve_forever()
 
+
+def tutu():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    result = sock.connect_ex(('127.0.0.1',8080))
+    if result == 0:
+        print("Port is open")
+    else:
+        print("Port is not open")
 
 
 class MyHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -74,9 +83,11 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 
 if __name__ =="__main__":
     main()
+    tutu()
     thread2 = threading.Thread(target=server)
     thread2.start()
 
     while True:
         time.sleep(15)
+        tutu()
         main()
